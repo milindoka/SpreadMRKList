@@ -60,7 +60,7 @@ public class SpreadMRKListModel {
 	        FileNameExtensionFilter filter = new FileNameExtensionFilter("Result View", "rlt");
 	        chooser.setFileFilter(filter);
 	        chooser.setCurrentDirectory(new File("E:/Eclipse/Prahlad/Test Entries"));
-	        chooser.setCurrentDirectory(new File("/home/prahlad/Blank Entries"));
+	        chooser.setCurrentDirectory(new File("/home/prahallad/Test Entries"));
 	        chooser.setCurrentDirectory(new File("/home/siws/Blank Entries"));   
 	       
 	        int option = chooser.showOpenDialog(null);

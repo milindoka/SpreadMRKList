@@ -226,7 +226,7 @@ public class SpreadMRKListController {
 	          FileNameExtensionFilter filter = new FileNameExtensionFilter("Result View", "rlt");
 	          choosertosave.setFileFilter(filter);
 	          choosertosave.setCurrentDirectory(new File("E:/Eclipse/Prahlad/Test Entries"));
-	          choosertosave.setCurrentDirectory(new File("/home/prahlad/Blank Entries"));
+	          choosertosave.setCurrentDirectory(new File("/home/prahallad/Test Entries"));
 	          choosertosave.setCurrentDirectory(new File("/home/siws/Blank Entries"));   
 	          int option = choosertosave.showSaveDialog(choosertosave);
 
@@ -622,7 +622,8 @@ public class SpreadMRKListController {
 		String Result1 = "Fail", Result2 = "Promoted", Result3 = "PENDING";		
 		
 		for(int i = 0; i < 8; i++){
-			Show(engmarks());
+			Show(Sub6(i));
+//			Show(Sub2(i));
 //			if( engmarks() <= 33) { SetData (Result1, i, 31) ; }
 			
 //			else {						
@@ -633,7 +634,7 @@ public class SpreadMRKListController {
 				AVG = TotalXcludeEVS/2 + Integer.parseInt(GetData1(View.getTable(), i, 28));
 				Percent = ( (double) Math.ceil(AVG)/650) * 100;		
 				String result = String.format("%.2f", Percent);
-				SetData (Result3, i, 31);
+				SetData (Math.ceil(Sub6(i)/2), i, 31);
 //			}
 		
 		
@@ -645,22 +646,67 @@ public class SpreadMRKListController {
 //		SetData (result, i, 31);
 		}
 	}                                  
-	public int engmarks(){
-		int TotalOfEng = 0, engtotal = 0;
-		
-		for(int i = 0; i < 5; i++){
+	public float Sub1(int i){
+		int TotalOfEng = 0, engtotal = 0;	
 			for(int j = 4; j < 8; j++ ){
 			String EngTotal = GetData1(View.getTable(), i, j);
 		    engtotal = 	Integer.parseInt(EngTotal);
 		    TotalOfEng = TotalOfEng + engtotal;
 		    }
-//			Show(TotalOfEng);
-//			TotalOfEng = 0;
-		}
-		
-		return TotalOfEng;
-		
+		return TotalOfEng;		
 	}
+	
+	public float Sub2(int i){
+		int TotalOfSLITEL1CS1 = 0, slitel1cs1 = 0;	
+			for(int j = 8; j < 12; j++ ){
+			String SlItEl1Cs1Total = GetData1(View.getTable(), i, j);
+			slitel1cs1 = 	Integer.parseInt(SlItEl1Cs1Total);
+		    TotalOfSLITEL1CS1 = TotalOfSLITEL1CS1 + slitel1cs1;
+		    }
+		return TotalOfSLITEL1CS1;		
+	}
+	
+	public float Sub3(int i){
+		int TotalOfSLITEL2CS2 = 0, slitcl2cs2 = 0;	
+			for(int j = 12; j < 16; j++ ){
+			String SlItEl2Cs2Total = GetData1(View.getTable(), i, j);
+			slitcl2cs2 = 	Integer.parseInt(SlItEl2Cs2Total);
+		    TotalOfSLITEL2CS2 = TotalOfSLITEL2CS2 + slitcl2cs2;
+		    }
+		return TotalOfSLITEL2CS2;		
+	}
+
+	public float Sub4(int i){
+		int TotalOfSub4 = 0, sub4 = 0;	
+			for(int j = 16; j < 20; j++ ){
+			String Sub4Total = GetData1(View.getTable(), i, j);
+			sub4 = 	Integer.parseInt(Sub4Total);
+			TotalOfSub4 = TotalOfSub4 + sub4;
+		    }
+		return TotalOfSub4;		
+	}
+
+	public float Sub5(int i){
+		int TotalOfSub5 = 0, sub5 = 0;	
+			for(int j = 20; j < 24; j++ ){
+			String Sub5Total = GetData1(View.getTable(), i, j);
+			sub5 = 	Integer.parseInt(Sub5Total);
+			TotalOfSub5 = TotalOfSub5 + sub5;
+		    }
+		return TotalOfSub5;		
+	}
+	
+	public float Sub6(int i){
+		int TotalOfSub6 = 0, sub6 = 0;	
+			for(int j = 24; j < 28; j++ ){
+			String Sub6Total = GetData1(View.getTable(), i, j);
+			sub6 = 	Integer.parseInt(Sub6Total);
+			TotalOfSub6 = TotalOfSub6 + sub6;
+		    }
+		return TotalOfSub6;		
+	}
+
+	
 	public void ENGMarks(){
 		  
 		 String[] subwithmarks = null;
