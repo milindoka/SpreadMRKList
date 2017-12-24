@@ -153,7 +153,7 @@ public class printRoutines {
 		     newFont = new Font("Liberation Serif", Font.PLAIN, 13);
 //		     FontMetrics metrics = pg.getFontMetrics(newFont);
 		     int LtMrg = 40;       // Left Top x, Left Top y and Left Margin
-		     int BtMrg = 820;
+		     int BtMrg = 750;
 		        		          		          		          
 		for(int i = 0; i < 8; i++){	
 			pg.drawRect(80, 300+i*20, 80, 20);        // Printing LEFT Two columns grid
@@ -161,11 +161,52 @@ public class printRoutines {
 					  				          
 		for(int j = 0; j < 2; j++){
 		    pg.drawRect(230 + j*87, 460, 88, 20);        // Printing Bottom Rectangles					
+		    pg.drawString("RESULT", 250, 475);
 		}		          		          
 				  
 		for(int j = 0; j < 11; j++){
 		  for(int i = 0; i < 8; i++){	
 			  pg.drawRect(160 + j*35, 300+i*20, 35, 20);        // Printing Body of Marks Sheet
+			  pg.drawString("Examination", 82, 315);
+			  pg.drawString("Unit Test I", 90, 335);
+			  pg.drawString("Terminal I", 90, 355);
+			  pg.drawString("Unit Test II", 90, 375);
+			  pg.drawString("Terminal II", 90, 395);
+			  pg.drawString("Aaggregate", 85, 415);
+			  pg.drawString("Average", 95, 435);
+			  pg.drawString("Grace", 103, 455);
+			  
+			  pg.drawString("Max", 165, 315);
+			  pg.drawString("Min", 201, 315);
+			  pg.drawString("SUB", 235, 315);
+			  pg.drawString("SUB", 270, 315);
+			  pg.drawString("SUB", 305, 315);
+			  pg.drawString("SUB", 340, 315);
+			  pg.drawString("SUB", 375, 315);
+			  pg.drawString("SUB", 410, 315);
+			  pg.drawString("SUB", 445, 315);
+			  pg.drawString("SUB", 480, 315);
+			  pg.drawString("Total", 512, 315);
+			  
+			  pg.drawString("25", 170, 335);
+			  pg.drawString("50", 170, 355);
+			  pg.drawString("25", 170, 375);
+			  pg.drawString("100", 165, 395);
+			  pg.drawString("70", 205, 415);
+			  pg.drawString("35", 205, 435);
+			  pg.drawString("15", 170, 455);
+			  
+			  for(int k = 0; k < 4; k++)
+			  {
+				  pg.drawString("-----", 200, 335+k*20);			
+			  }
+
+			  for(int k = 0; k < 2; k++)
+			  {
+				  pg.drawString("-----", 165, 415+k*20);			
+			  }
+			  pg.drawString("-----", 200, 455);
+			  
 		  }
 		}
 //		int y = 585;                                        // Right margin indent.
