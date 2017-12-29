@@ -22,7 +22,7 @@ public class SpreadMRKListView extends javax.swing.JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 		private JLabel lblPrinter;
-	    private JButton btnPrint;      
+	    private JButton btnPrintCurrent;      
 	    private JButton btnCansel;
 	    private JButton btnSetPrinter;
 	    private JButton btnUpdate;
@@ -32,6 +32,9 @@ public class SpreadMRKListView extends javax.swing.JFrame {
 	    private JButton btnLoad;
 	    private JButton btnResult;	
 	    private JButton btnProcess;
+	    private JButton btnPrintAll;
+	    private JButton btnSpreadSheet;
+	    
 	    private JTable table;
 	    ColumnGroup Eng, SL, Sub1, Sub2, Sub3, Sub4 ;
 	    
@@ -43,16 +46,16 @@ public class SpreadMRKListView extends javax.swing.JFrame {
       setTitle("Consolidated Marks Sheet");
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       setSize( 1290, 700 );
+      setResizable(false);
+      setVisible(true);
 //    For Full Screen size window 
       //// This 
 //      setExtendedState(JFrame.MAXIMIZED_BOTH); 
-//      setUndecorated(true);
+//      setUndecorated(true);fprint
       //// OR This 
 //      Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 //      setBounds(0,0,screenSize.width, screenSize.height);
-      setResizable(false);
-      setLocationRelativeTo(null);
-      setVisible(true);           
+ //     setLocationRelativeTo(null);          
 
     DefaultTableModel model = new DefaultTableModel();
     model.setDataVector(new Object[][]{
@@ -195,10 +198,19 @@ public class SpreadMRKListView extends javax.swing.JFrame {
     lblPrinter.setFont(new Font("Times New Roman", Font.BOLD, 14));
     southPanel.add(lblPrinter);
     
-    btnPrint = new JButton("Print");
-    btnPrint.setFont(new Font("Times New Roman", Font.BOLD, 14));
+    btnPrintCurrent = new JButton("Print Current");
+    btnPrintCurrent.setFont(new Font("Times New Roman", Font.BOLD, 14));
   //  btnPrint.setPreferredSize(new Dimension(115, 25));
-    southPanel.add(btnPrint);
+    southPanel.add(btnPrintCurrent);
+    
+    btnPrintAll = new JButton("Print All");
+    btnPrintAll.setFont(new Font("Times New Roman", Font.BOLD, 14));
+    southPanel.add(btnPrintAll);
+    
+    btnSpreadSheet = new JButton("Print Spread sheet");
+    btnPrintAll.setFont(new Font("Times New Roman", Font.BOLD, 14));
+    southPanel.add(btnSpreadSheet);
+
     
     btnCansel = new JButton("Cancel");
     btnCansel.addActionListener(new ActionListener() {
@@ -235,7 +247,7 @@ public class SpreadMRKListView extends javax.swing.JFrame {
     }
 	
 	public JButton getPrintButton(){
-        return btnPrint;
+        return btnPrintCurrent;
     }
 	
 	public JButton getSetPrinterButton(){

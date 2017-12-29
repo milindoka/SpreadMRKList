@@ -184,8 +184,8 @@ public class printRoutines {
 			  pg.drawString("SUB", 340, 315);
 			  pg.drawString("SUB", 375, 315);
 			  pg.drawString("SUB", 410, 315);
-			  pg.drawString("SUB", 445, 315);
-			  pg.drawString("SUB", 480, 315);
+			  pg.drawString("EVS", 445, 315);
+			  pg.drawString("PTE", 480, 315);
 			  pg.drawString("Total", 512, 315);
 			  
 			  pg.drawString("25", 170, 335);
@@ -212,7 +212,7 @@ public class printRoutines {
 //		int y = 585;                                        // Right margin indent.
 		pg.drawString("( FOR OFFICE USE ONLY )", 230, LtMrg);
 		pg.drawString("( FOR OFFICE USE ONLY )", 230, BtMrg);
-		          				          
+		
 		return Printable.PAGE_EXISTS;
 	   }
 	});

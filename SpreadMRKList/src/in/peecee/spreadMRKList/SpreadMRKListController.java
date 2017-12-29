@@ -5,12 +5,18 @@ package in.peecee.spreadMRKList;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,6 +25,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.standard.MediaPrintableArea;
 import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -132,18 +140,11 @@ public class SpreadMRKListController {
 	        View.getTable().addMouseListener(new MouseAdapter() {
 	            @Override
 	            public void mouseClicked(MouseEvent evt) {
-	            	boolean mouseclicked = true;   String RollNo = null;
+//	            	boolean mouseclicked = true;  
+	            	String RollNo = null;
 	            	int Rows = View.getTable().getRowCount();
 	                int row = View.getTable().rowAtPoint(evt.getPoint());
-	                String plate[];
-	    			String rollno;
-	    			String subject = null;		
-	                
-	                  if (row >= 0){ 
-	                	  if(mouseclicked){ 
 	                         RollNo = GetData1(View.getTable(), row, 1 );
-	                      }	                	                 	                  					
-	               }  	                  
 	                SearchByRollNo(RollNo);                  
 	            }	                
 	});	        
@@ -197,7 +198,7 @@ public class SpreadMRKListController {
 	        
 	printListener = new ActionListener() {
 	public void actionPerformed(ActionEvent actionEvent) {                  
-	                BtnPrint();
+	                BtnPrintCurrent();
 	            }
 	  }; 
 
@@ -287,13 +288,6 @@ public class SpreadMRKListController {
 		     	  SetData(div, i-1, 2);
 		     	  SetData(names,i-1,3);
 	     	  }
-//	     	  show(names);
-//	     	  show(names.length());
-//	     	   show(plate);            //  Full Plate
-//	     	   show(plate[0]);         //  Roll No i.e.  0 th item of plate
-//	     	   show(plate[1]);         //  Name i.e. 1st item of plate
-//	     	   show(plate[2]);         //  2nd item of plate which is of the form A=U1=ENG:31
-//	     	   show(plate[2].substring(0,1);); //  2nd item of plate from which DIV is extracted
 	     	  
       }
 		 
@@ -463,11 +457,95 @@ public class SpreadMRKListController {
 }		
 	
 	
-   private void BtnPrint(){			
+   private void BtnPrintCurrent(){			
 	  //	   System.exit(0);
-	   
-	   SCButtons.showScoreButtons(); 
+//	   SCButtons.showScoreButtons(); 
 	  
+	   
+	 try {
+	      PrinterJob pjob = PrinterJob.getPrinterJob();
+		  pjob.setJobName("Current Marks Card Print");
+		  pjob.setCopies(1);
+		  pjob.setPrintable(new Printable() {
+		  public int print(Graphics pg, PageFormat pf, int pageNum) {
+		   int totalpages = 0;
+			if (pageNum > totalpages) // we only print one page
+			return Printable.NO_SUCH_PAGE; // ie., end of job
+			Font newFont;		          
+			newFont = new Font("Liberation Serif", Font.PLAIN, 13);
+//			FontMetrics metrics = pg.getFontMetrics(newFont);
+			int LtMrg = 40;       // Left Top x, Left Top y and Left Margin
+		    int BtMrg = 750;	        		          		          		          
+			for(int i = 0; i < 8; i++){	
+				pg.drawRect(80, 300+i*20, 80, 20);        // Printing LEFT Two columns grid
+			}				  				          
+			for(int j = 0; j < 2; j++){
+			    pg.drawRect(230 + j*87, 460, 88, 20);        // Printing Bottom Rectangles					
+			    pg.drawString("RESULT", 250, 475);
+			}		          		          						  
+			for(int j = 0; j < 11; j++){
+			  for(int i = 0; i < 8; i++){	
+				  pg.drawRect(160 + j*35, 300+i*20, 35, 20);        // Printing Body of Marks Sheet
+				  pg.drawString("Examination", 82, 315);
+				  pg.drawString("Unit Test I", 90, 335);
+				  pg.drawString("Terminal I", 90, 355);
+				  pg.drawString("Unit Test II", 90, 375);
+				  pg.drawString("Terminal II", 90, 395);
+				  pg.drawString("Aaggregate", 85, 415);
+				  pg.drawString("Average", 95, 435);
+				  pg.drawString("Grace", 103, 455);
+				  pg.drawString("Max", 165, 315);
+				  pg.drawString("Min", 201, 315);
+				  pg.drawString("SUB", 235, 315);
+				  pg.drawString("SUB", 270, 315);
+				  pg.drawString("SUB", 305, 315);
+				  pg.drawString("SUB", 340, 315);
+				  pg.drawString("SUB", 375, 315);
+				  pg.drawString("SUB", 410, 315);
+				  pg.drawString("EVS", 445, 315);
+				  pg.drawString("PTE", 480, 315);
+				  pg.drawString("Total", 512, 315);
+				  pg.drawString("25", 170, 335);
+				  pg.drawString("50", 170, 355);
+				  pg.drawString("25", 170, 375);
+				  pg.drawString("100", 165, 395);
+				  pg.drawString("70", 205, 415);
+				  pg.drawString("35", 205, 435);
+				  pg.drawString("15", 170, 455);					  
+			for(int k = 0; k < 4; k++)
+			  { pg.drawString("-----", 200, 335+k*20); }
+			for(int k = 0; k < 2; k++)
+			  {
+			    pg.drawString("-----", 165, 415+k*20);			
+			   }
+				pg.drawString("-----", 200, 455);
+					  
+		    }   
+		}      Show("Hi!!! All");
+//				int y = 585;                                        // Right margin indent.
+				pg.drawString("( FOR OFFICE USE ONLY )", 230, LtMrg);
+				pg.drawString("( FOR OFFICE USE ONLY )", 230, BtMrg);
+//				pg.drawString( GetData1(View.getTable(), 9, 3 ), 230, 150);
+				String RollNo;
+				int row = View.getTable().getSelectedRow();
+				RollNo = GetData1(View.getTable(), row, 1 );
+                Show(RollNo);				
+                pg.drawString(RollNo, 230, 150);	
+				return Printable.PAGE_EXISTS;
+			   }
+			});
+
+			if (pjob.printDialog() == false) // choose printer
+			return; 
+				     
+			HashPrintRequestAttributeSet pattribs=new HashPrintRequestAttributeSet();
+			pattribs.add(new MediaPrintableArea(2, 2, 210, 297, MediaPrintableArea.MM));
+			pjob.print(pattribs); 
+		}
+			catch (PrinterException pe) {
+			pe.printStackTrace();
+		  }                                     			
+   
    }
 	     
 
@@ -517,8 +595,6 @@ public class SpreadMRKListController {
 	   	   
 	   	   */	   	   	   	   
 	 
-	     
-
 	private void BtnSetPrinter(){
 //	        System.exit(0);
 			SetPrinter sp=new SetPrinter();
@@ -637,13 +713,6 @@ public class SpreadMRKListController {
 				SetData (Math.ceil(Sub6(i)/2), i, 31);
 //			}
 		
-		
-//		Show(GTotal);		
-//		Show(TotalXcludeEVS);
-//		Show(Math.ceil(AVG));
-//		Show(Percent);
-//		show(result);
-//		SetData (result, i, 31);
 		}
 	}                                  
 	public float Sub1(int i){
