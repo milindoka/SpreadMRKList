@@ -564,7 +564,19 @@ public class SpreadMRKListController {
 		  }                                     			
    
    }
-	     
+/*   
+   g.drawString("Mark Sheet showing the number of marks Obtained by  ",tlxstatic,tly-60);
+   g.drawString(NameField.getText().trim()+"    Roll : "+Roll.trim()+"   Div : "
+   +DiviField.getText(),tlxstatic,tly-40);
+   g.drawString(" in each head of passing at FYJC ("+Strim+") class in the examination conducted during
+   the academic Year "+ AY,tlxstatic,tly-20);
+
+   g.drawString("NOTE  :  This marksheet has been prepared as per the instruction circular No 6987, 
+   dated 04/11/2009 issued by",leftmargin,tly);
+   tly=tly+15;
+   g.drawString("               Secretary, Maharashtra State Board of Secondary and Higher Secondary Education,
+   Pune 411004",leftmargin,tly);
+*/     
 
 	   	   //   Swapping Total Scores in decreasing order --- Insertion Sorting 
 	   	   
