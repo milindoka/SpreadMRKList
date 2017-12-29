@@ -48,6 +48,8 @@ public class SpreadMRKListController {
 	public  ArrayList<String> strArray = new ArrayList<String>();
 	public  ArrayList<String> TotalMarksArray = new ArrayList<String>();
 	public  ArrayList<String> subArray = new ArrayList<String>();
+	public  ArrayList<String> subMarksArray = new ArrayList<String>();
+	
 	
 	
 	public void show(float percent) {JOptionPane.showMessageDialog(null, percent);}   ///for debugging
@@ -460,6 +462,14 @@ public class SpreadMRKListController {
    private void BtnPrintCurrent(){			
 	  //	   System.exit(0);
 //	   SCButtons.showScoreButtons(); 
+	    int row = View.getTable().getSelectedRow();
+	    subMarksArray.removeAll(subMarksArray);   
+	   	for(int k = 4; k < 30 ; k++){	   		
+	   		subMarksArray.add((String) GetData1(View.getTable(),row,k));
+	   	}
+        Show(subMarksArray);
+        Show(subMarksArray.get(24));
+        Show(subMarksArray.get(25));
 	  
 	   
 	 try {
@@ -521,16 +531,23 @@ public class SpreadMRKListController {
 				pg.drawString("-----", 200, 455);
 					  
 		    }   
-		}      Show("Hi!!! All");
-//				int y = 585;                                        // Right margin indent.
+		}     
 				pg.drawString("( FOR OFFICE USE ONLY )", 230, LtMrg);
 				pg.drawString("( FOR OFFICE USE ONLY )", 230, BtMrg);
-//				pg.drawString( GetData1(View.getTable(), 9, 3 ), 230, 150);
-				String RollNo;
-				int row = View.getTable().getSelectedRow();
-				RollNo = GetData1(View.getTable(), row, 1 );
-                Show(RollNo);				
-                pg.drawString(RollNo, 230, 150);	
+				String SubMarks = null;
+//				int row = View.getTable().getSelectedRow();  
+				int k = 0;
+				for(int i= 0; i < 6; i++){
+					for(int j = 0; j < 4; j++){
+						pg.drawString(subMarksArray.get(k), 240+i*35, 335+j*20);
+						k++;
+//						if(k == 24){pg.drawString(subMarksArray.get(k), 450, 395);} 
+//						if(k == 25){pg.drawString(subMarksArray.get(25), 485, 395);}
+					}								
+				}		
+				pg.drawString(subMarksArray.get(24), 450, 395);
+				pg.drawString(subMarksArray.get(25), 485, 395);
+				
 				return Printable.PAGE_EXISTS;
 			   }
 			});
