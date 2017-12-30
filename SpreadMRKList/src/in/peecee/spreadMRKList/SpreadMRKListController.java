@@ -24,6 +24,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.standard.MediaPrintableArea;
@@ -49,7 +50,8 @@ public class SpreadMRKListController {
 	public  ArrayList<String> TotalMarksArray = new ArrayList<String>();
 	public  ArrayList<String> subArray = new ArrayList<String>();
 	public  ArrayList<String> subMarksArray = new ArrayList<String>();
-	
+	public  ArrayList<String> headerArray = new ArrayList<String>();
+	public  ArrayList<String> StuDetailsArray = new ArrayList<String>();
 	
 	
 	public void show(float percent) {JOptionPane.showMessageDialog(null, percent);}   ///for debugging
@@ -467,9 +469,26 @@ public class SpreadMRKListController {
 	   	for(int k = 4; k < 30 ; k++){	   		
 	   		subMarksArray.add((String) GetData1(View.getTable(),row,k));
 	   	}
+	   	
+	   	StuDetailsArray.removeAll(StuDetailsArray);
+	   	for(int k = 1; k < 4 ; k++){	   		
+	   		StuDetailsArray.add((String) GetData1(View.getTable(),row,k));
+	   	}
+	   	
+		  String RollNo = View.getTable().getModel().getValueAt(row, 1).toString();
+		  SearchByRollNo(RollNo);
+		  headerArray.removeAll(headerArray);
+		  headerArray.add(RollNo);
+		  
+		  Calendar cal = Calendar.getInstance();
+		  int year = cal.get(Calendar.YEAR);
+//		  show(year);
+
+		  
         Show(subMarksArray);
-        Show(subMarksArray.get(24));
-        Show(subMarksArray.get(25));
+        Show(StuDetailsArray);
+//        Show(subMarksArray.get(24));
+//        Show(subMarksArray.get(25));
 	  
 	   
 	 try {
@@ -547,6 +566,26 @@ public class SpreadMRKListController {
 				}		
 				pg.drawString(subMarksArray.get(24), 450, 395);
 				pg.drawString(subMarksArray.get(25), 485, 395);
+				
+				  Calendar cal = Calendar.getInstance();
+				  int year = cal.get(Calendar.YEAR);
+
+
+				pg.drawString("Mark Sheet showing the number of marks Obtained by  ", 80, 200);
+				pg.drawString(StuDetailsArray.get(2), 80, 220);   //  Name of student 
+//				show(StuDetailsArray.get(2).length());          
+				int width1 = pg.getFontMetrics().stringWidth("with Roll No. : ");
+				int width2 = pg.getFontMetrics().stringWidth(" of Division : ");
+				show(width1);
+				pg.drawString("with Roll No. : ", 80, 240);				
+				pg.drawString(StuDetailsArray.get(0), width1+80, 240);     // Roll Number of student
+				pg.drawString("of Division : ", width1+width2+40, 240);
+				pg.drawString(StuDetailsArray.get(1), width1+width2+120, 240);     // Division of student
+				pg.drawString(", Stream " + "COMMERCE", 300, 240);     // Division of student
+//				pg.drawString("COMMERCE", 380, 240);
+				pg.drawString("The following table shows each head of passing at FYJC examintion onducted", 80, 260);
+				pg.drawString("during the academic year " + year, 80, 280);
+				
 				
 				return Printable.PAGE_EXISTS;
 			   }
