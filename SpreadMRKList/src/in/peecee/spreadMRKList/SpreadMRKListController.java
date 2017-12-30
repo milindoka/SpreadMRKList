@@ -462,7 +462,7 @@ public class SpreadMRKListController {
 	
 	
    private void BtnPrintCurrent(){			
-	  //	   System.exit(0);
+
 //	   SCButtons.showScoreButtons(); 
 	    int row = View.getTable().getSelectedRow();
 	    subMarksArray.removeAll(subMarksArray);   
@@ -475,21 +475,10 @@ public class SpreadMRKListController {
 	   		StuDetailsArray.add((String) GetData1(View.getTable(),row,k));
 	   	}
 	   	
-		  String RollNo = View.getTable().getModel().getValueAt(row, 1).toString();
-		  SearchByRollNo(RollNo);
-		  headerArray.removeAll(headerArray);
-		  headerArray.add(RollNo);
-		  
-		  Calendar cal = Calendar.getInstance();
-		  int year = cal.get(Calendar.YEAR);
-//		  show(year);
-
-		  
-        Show(subMarksArray);
-        Show(StuDetailsArray);
-//        Show(subMarksArray.get(24));
-//        Show(subMarksArray.get(25));
-	  
+		  final String RollNo = View.getTable().getModel().getValueAt(row, 1).toString();
+		  		  
+		  collheaderfinder(RollNo);
+		  show(collheaderfinder(RollNo));
 	   
 	 try {
 	      PrinterJob pjob = PrinterJob.getPrinterJob();
@@ -502,7 +491,6 @@ public class SpreadMRKListController {
 			return Printable.NO_SUCH_PAGE; // ie., end of job
 			Font newFont;		          
 			newFont = new Font("Liberation Serif", Font.PLAIN, 13);
-//			FontMetrics metrics = pg.getFontMetrics(newFont);
 			int LtMrg = 40;       // Left Top x, Left Top y and Left Margin
 		    int BtMrg = 750;	        		          		          		          
 			for(int i = 0; i < 8; i++){	
@@ -524,7 +512,7 @@ public class SpreadMRKListController {
 				  pg.drawString("Average", 95, 435);
 				  pg.drawString("Grace", 103, 455);
 				  pg.drawString("Max", 165, 315);
-				  pg.drawString("Min", 201, 315);
+				  pg.drawString("Min", 200, 315);
 				  pg.drawString("SUB", 235, 315);
 				  pg.drawString("SUB", 270, 315);
 				  pg.drawString("SUB", 305, 315);
@@ -553,45 +541,30 @@ public class SpreadMRKListController {
 		}     
 				pg.drawString("( FOR OFFICE USE ONLY )", 230, LtMrg);
 				pg.drawString("( FOR OFFICE USE ONLY )", 230, BtMrg);
-				String SubMarks = null;
-//				int row = View.getTable().getSelectedRow();  
 				int k = 0;
 				for(int i= 0; i < 6; i++){
 					for(int j = 0; j < 4; j++){
 						pg.drawString(subMarksArray.get(k), 240+i*35, 335+j*20);
 						k++;
-//						if(k == 24){pg.drawString(subMarksArray.get(k), 450, 395);} 
-//						if(k == 25){pg.drawString(subMarksArray.get(25), 485, 395);}
 					}								
 				}		
-				pg.drawString(subMarksArray.get(24), 450, 395);
-				pg.drawString(subMarksArray.get(25), 485, 395);
+				pg.drawString(subMarksArray.get(24), 450, 395);               //  EVS marks
+				pg.drawString(subMarksArray.get(25), 485, 395);               //  PTE Grade
 				
-				  Calendar cal = Calendar.getInstance();
-				  int year = cal.get(Calendar.YEAR);
-
+				Calendar cal = Calendar.getInstance();
+				int year = cal.get(Calendar.YEAR);
 
 				pg.drawString("Mark Sheet showing the number of marks Obtained by  ", 80, 200);
 				pg.drawString(StuDetailsArray.get(2), 80, 220);   //  Name of student 
-//				show(StuDetailsArray.get(2).length());          
-				int width1 = pg.getFontMetrics().stringWidth("with Roll No. : ");
-				int width2 = pg.getFontMetrics().stringWidth(" of Division : ");
-				show(width1);
-				pg.drawString("with Roll No. : ", 80, 240);				
-				pg.drawString(StuDetailsArray.get(0), width1+80, 240);     // Roll Number of student
-				pg.drawString("of Division : ", width1+width2+40, 240);
-				pg.drawString(StuDetailsArray.get(1), width1+width2+120, 240);     // Division of student
-				pg.drawString(", Stream " + "COMMERCE", 300, 240);     // Division of student
-//				pg.drawString("COMMERCE", 380, 240);
+				pg.drawString("with Roll No. : "+ StuDetailsArray.get(0)+" of Division : "
+				              +StuDetailsArray.get(1)+", in " + Streamfinder(RollNo)+ " stream", 80, 240);
+
 				pg.drawString("The following table shows each head of passing at FYJC examintion conducted", 80, 260);
 				pg.drawString("during the academic year " + year, 80, 280);
 				
 				pg.drawString("NOTE  :  This marksheet has been prepared as per the instruction of circular", 80, 520);
 				pg.drawString("No 6987,dated 04/11/2009 issued by Secretary, Maharashtra State", 140, 540);
 				pg.drawString("Board of Secondary and Higher Secondary Education,Pune 411004", 140, 560);
-
-				
-				
 				
 				return Printable.PAGE_EXISTS;
 			   }
@@ -731,7 +704,7 @@ public class SpreadMRKListController {
 	{ 
 		subArray.removeAll(subArray);		
 		String SubFromPlate = null;
-		String plate[], Subjects[];
+		String plate[];
 		String subfromArray = null ;
 	    plate=Model.strArray.get(roll).split("#");
 		   for(int j = 0; j < subject.length ; j++)
@@ -1479,8 +1452,7 @@ public class SpreadMRKListController {
 	 }
 }
 
-	
-	public void SearchByRollNo(String RollNo){
+	public String collheaderfinder(String RollNo){
 		
 		String plate[];
       	String rollno;
@@ -1488,8 +1460,7 @@ public class SpreadMRKListController {
 //		String RollNo = View.Search().getText();
 		int Rows = View.getTable().getRowCount();
 		String subject = null;
-		
-		
+				
 		 for (int row = 0; row < Rows-1; row++) {				
 			  plate=Model.strArray.get(row+1).split("#");
 			  String SameRoll = GetData1(View.getTable(), row, 1);
@@ -1508,9 +1479,7 @@ public class SpreadMRKListController {
 	             }					
 			}		
 
-//			else { show("No Such Name Found"); break; }
-			
-			 for (int j = 2; j < plate.length; j++){							 
+			for (int j = 2; j < plate.length; j++){							 
 	     	   subject = plate[j].substring(5, 8);
 	     	   rollno = plate[0].substring(0);
 	     		  if(RollNo.trim().equals(rollno.trim())){    		    
@@ -1538,7 +1507,90 @@ public class SpreadMRKListController {
     		    	    View.Sub4.text= subject; }     		   
 	     		  }
 	     	   }
+		 }
+		return subject;
 
+		
+	}
+	
+	public String Streamfinder(String Rollno){		
+		String Science = "SCIENCE", Commerce = "COMMERCE";
+		String plate[];
+      	String rollno;
+      	int Rows = View.getTable().getRowCount();
+		String subject = null;
+		 for (int row = 0; row < Rows-1; row++) {				
+			  plate=Model.strArray.get(row+1).split("#");
+ 			for (int j = 2; j < plate.length; j++){							 
+	     	   subject = plate[j].substring(5, 8);
+	     	   rollno = plate[0].substring(0);
+	     		  if(Rollno.trim().equals(rollno.trim())){    		    	     		    	     		  
+	     		    if(subject.contains("BKE")||subject.contains("PHY")){ 
+		     		    View.Sub2.text= subject; }
+	     		  }
+	     	   }
+		 }
+        show(View.Sub2.text);        
+		if(View.Sub2.text.equals("PHY")) {return Science;}
+		else return Commerce;		
+	}
+	
+	
+	public void SearchByRollNo(String RollNo){
+		
+		String plate[];
+      	String rollno;
+      	boolean found = false;
+//		String RollNo = View.Search().getText();
+		int Rows = View.getTable().getRowCount();
+		String subject = null;
+				
+		 for (int row = 0; row < Rows-1; row++) {				
+			  plate=Model.strArray.get(row+1).split("#");
+			  String SameRoll = GetData1(View.getTable(), row, 1);
+			  rollno = plate[0].substring(0);		    
+			  
+			if(RollNo.trim().equals(SameRoll.trim())){		//	show(rollno);		
+			found = true;
+			// this will automatically set the view of the scroll in the location of the value
+			View.getTable().scrollRectToVisible(View.getTable().getCellRect(row, 0, true));
+					
+           // this will automatically set the focus of the searched/selected row/value
+			View.getTable().setRowSelectionInterval(row, row);	
+				 for (int i = 0; i <= View.getTable().getColumnCount()-1; i++) {
+	
+					 View.getTable().getColumnModel().getColumn(i).setCellRenderer(new HighlightRenderer());
+	             }					
+			}		
+
+			for (int j = 2; j < plate.length; j++){							 
+	     	   subject = plate[j].substring(5, 8);
+	     	   rollno = plate[0].substring(0);
+	     		  if(RollNo.trim().equals(rollno.trim())){    		    
+	     		    
+	     		    if(subject.contains("ENG")){ 
+	     		    	View.Eng.text="ENG"; }
+	     		    
+	     		if(subject.contains("MAR")||subject.contains("TAM")||subject.contains("HIN")||subject.contains("EL1")
+	     				||subject.contains("ITE")||subject.contains("CS1")){ 
+	     		    	View.SL.text= subject; }
+	     		   
+	     		if(subject.contains("ECO")||subject.contains("BIO")
+	     				||subject.contains("EL2")||subject.contains("CS2")){ 
+	     		    	View.Sub1.text= subject; }
+	     		  
+	     		if(subject.contains("BKE")||subject.contains("PHY")){ 
+		     		    View.Sub2.text= subject; }
+	     		 
+	     		if(subject.contains("OCM")||subject.contains("CHE")){ 
+	     		    	View.Sub3.text= subject; }
+	     		 
+	     		if(subject.contains("MAT")||subject.contains("SEP")){ 
+    		     	    JTableHeader th = View.getTable().getTableHeader();  //  For header changing dynamically
+    		   	        th.repaint();      
+    		    	    View.Sub4.text= subject; }     		   
+	     		  }
+	     	   }
 		 }
 	}
 	
