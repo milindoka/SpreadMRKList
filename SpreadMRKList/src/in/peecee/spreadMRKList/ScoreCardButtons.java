@@ -67,7 +67,7 @@ public class ScoreCardButtons {
 		JButton currentPrintButton = new JButton("Print Current Marks Card");
 		currentPrintButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				prnRoutines.PrintCurrent();	
+//				prnRoutines.PrintCurrent();	
 				
 			}
 		});

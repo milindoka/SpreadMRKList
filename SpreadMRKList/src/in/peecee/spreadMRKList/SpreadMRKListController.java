@@ -466,6 +466,7 @@ public class SpreadMRKListController {
 //	   SCButtons.showScoreButtons(); 
 	   final ArrayList<String> subject;
 	    int row = View.getTable().getSelectedRow();
+	    if(row <= 0){show("No name or Roll Number is selected ");}
 	    subMarksArray.removeAll(subMarksArray);   
 	   	for(int k = 4; k < 30 ; k++){	   		
 	   		subMarksArray.add((String) GetData1(View.getTable(),row,k));
@@ -479,13 +480,7 @@ public class SpreadMRKListController {
 		  final String RollNo = View.getTable().getModel().getValueAt(row, 1).toString();
 //		  ArrayList<String> subject;		  
 		  subject = collheaderfinder(RollNo);
-	      int sumUnit1, sumTerm1, sumUnit2, sumTerm2;
-		      sumUnit1 = Integer.parseInt(GetData1(View.getTable(),  row,4)) 
-						 + Integer.parseInt(GetData1(View.getTable(),row,8))
-				         + Integer.parseInt(GetData1(View.getTable(),row,12))
-				         + Integer.parseInt(GetData1(View.getTable(),row,16));
-			  show(sumUnit1);
-	          show(String.valueOf(sumUnit1));
+		  String EVS = GetData1(View.getTable(),row,28);
 		  
 	 try {
 	      PrinterJob pjob = PrinterJob.getPrinterJob();
@@ -497,7 +492,7 @@ public class SpreadMRKListController {
 		  if (pageNum > totalpages) // we only print one page
 		  return Printable.NO_SUCH_PAGE; // ie., end of job
 		  Font newFont;		          
-		  newFont = new Font("Liberation Serif", Font.PLAIN, 13);
+		  newFont = new Font("Liberation Serif", Font.PLAIN, 12);
 		  int LtMrg = 40;       // Left Top x, Left Top y and Left Margin
 		  int BtMrg = 750;	        		          		          		          
 		  for(int i = 0; i < 8; i++){pg.drawRect(80, 300+i*20, 80, 20); }    // Printing LEFT Two columns grid			  				          
@@ -542,47 +537,36 @@ public class SpreadMRKListController {
 		int k = 0;
 		for(int i= 0; i < 6; i++){
 		   for(int j = 0; j < 4; j++){
-			 pg.drawString(subMarksArray.get(k), 240+i*35, 335+j*20);
+			 pg.drawString(subMarksArray.get(k), 240+i*35, 335+j*20);   //  All Marks
 			 k++;
 			}								
 		}		
 		pg.drawString(subMarksArray.get(24), 450, 395);               //  EVS marks
 		pg.drawString(subMarksArray.get(25), 485, 395);               //  PTE Grade
-		int row = View.getTable().getSelectedRow();
-        int sumU1, sumT1, sumU2, sumT2, evs;
-	    sumU1 = Integer.parseInt(GetData1(View.getTable(),row,4)) 
-				 + Integer.parseInt(GetData1(View.getTable(),row,8))
-		         + Integer.parseInt(GetData1(View.getTable(),row,12))
-		         + Integer.parseInt(GetData1(View.getTable(),row,16))
-	             + Integer.parseInt(GetData1(View.getTable(),row,20))  
-	             + Integer.parseInt(GetData1(View.getTable(),row,24));
-	    sumT1 = Integer.parseInt(GetData1(View.getTable(),row,5)) 
-				 + Integer.parseInt(GetData1(View.getTable(),row,9))
-		         + Integer.parseInt(GetData1(View.getTable(),row,13))
-		         + Integer.parseInt(GetData1(View.getTable(),row,17))
-		         + Integer.parseInt(GetData1(View.getTable(),row,21))
-		         + Integer.parseInt(GetData1(View.getTable(),row,25));
-	    sumU2 = Integer.parseInt(GetData1(View.getTable(),row,6)) 
-				 + Integer.parseInt(GetData1(View.getTable(),row,10))
-		         + Integer.parseInt(GetData1(View.getTable(),row,14))
-		         + Integer.parseInt(GetData1(View.getTable(),row,18))
-		         + Integer.parseInt(GetData1(View.getTable(),row,22))
-		         + Integer.parseInt(GetData1(View.getTable(),row,26));
-	    sumT2 = Integer.parseInt(GetData1(View.getTable(),row,7)) 
-				 + Integer.parseInt(GetData1(View.getTable(),row,11))
-		         + Integer.parseInt(GetData1(View.getTable(),row,15))
-		         + Integer.parseInt(GetData1(View.getTable(),row,19))
-		         + Integer.parseInt(GetData1(View.getTable(),row,23))
-		         + Integer.parseInt(GetData1(View.getTable(),row,27));
-	    evs = Integer.parseInt(GetData1(View.getTable(),row,28));
+		int row = View.getTable().getSelectedRow();        
+		pg.drawString(String.valueOf(SumU1Score()), 515, 335);        // Sum of all Unit 1 Exams
+		pg.drawString(String.valueOf(SumT1Score()), 515, 355);        // Sum of all Term 1 Exams
+		pg.drawString(String.valueOf(SumU2Score()), 515, 375);        // Sum of all Unit 2 Exams
+		pg.drawString(String.valueOf(SumT2andEVSScore()), 515, 395);  // Sum of all Term 2 Exams
+		
+        pg.drawString(String.valueOf(Sub1()), 240, 415);              // Sum of all marks English Subject
+        pg.drawString(String.valueOf(Sub2()), 273, 415);              // Sum of all marks SL or Tech Subject
+        pg.drawString(String.valueOf(Sub3()), 308, 415);              // Sum of all marks SL or Tech2 Subject
+        pg.drawString(String.valueOf(Sub4()), 341, 415);              // Sum of all marks SL or Sub4 Subject
+        pg.drawString(String.valueOf(Sub5()), 378, 415);              // Sum of all marks SL or Sub5 Subject
+        pg.drawString(String.valueOf(Sub6()), 412, 415);              // Sum of all marks SL or Sub6 Subject
+        pg.drawString(GetData1(View.getTable(),row,28), 450, 415);    // Marks of EVS Subject
+        
+//		  Font newFont;		          
+		  newFont = new Font("Liberation Serif", Font.PLAIN, 9);
 
-	    
-	    show(sumU1); show(sumT1); show(sumU2); show(sumT2); show(evs); 
-        show(String.valueOf(sumU1));
-
-				
+		pg.drawString(String.valueOf(SumU1Score()+SumT1Score()+SumU2Score()
+				                     +SumT2andEVSScore()+"/1250" ), 514, 415);  // Sum of all
+        
+	    				
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
+		int YEAR = year-1;
 
 		pg.drawString("Mark Sheet showing the number of marks Obtained by  ", 80, 200);
 		pg.drawString(StuDetailsArray.get(2), 80, 220);   //  Name of student 
@@ -590,7 +574,7 @@ public class SpreadMRKListController {
 		              +StuDetailsArray.get(1)+", in " + Streamfinder(RollNo)+ " stream", 80, 240);
 
 		pg.drawString("The following table shows each head of passing at FYJC examintion conducted", 80, 260);
-		pg.drawString("during the academic year " + year, 80, 280);				
+		pg.drawString("during the academic year " + YEAR +" - " + year, 80, 280);				
 		pg.drawString("NOTE  :  This marksheet has been prepared as per the instruction of circular", 80, 520);
 		pg.drawString("No 6987,dated 04/11/2009 issued by Secretary, Maharashtra State", 140, 540);
 		pg.drawString("Board of Secondary and Higher Secondary Education,Pune 411004", 140, 560);
@@ -680,21 +664,76 @@ public class SpreadMRKListController {
 		 for(int i = 0; i < Model.strArray.size()-1; i++){ 	 //   show(strArray.size());
 			 for(int j = 4; j < 29; j++){
 				marks = GetData1(View.getTable(),i,j);
-//				marks.trim();
 				if(marks == null || marks.isEmpty()){ marks = "00"; }					 
 				if(marks.contentEquals("AB") || marks.contentEquals("AB ")){ marks = "00"; }					 
 				Marks = Integer.parseInt(marks);             //  show(Marks);
 				TotalMarks = TotalMarks + Marks;             //  show(TotalMarks);			 
-//	            Show(Marks);
-//	            Show(TotalMarks);
 			  }
 			    String TM = String.format("%d", TotalMarks);
 			    SetData(TM,i,30);
-			    TotalMarks = 0;
-			 
+			    TotalMarks = 0;			 
 		 }							
 	}
 
+	public int SumU1Score(){
+		int row = View.getTable().getSelectedRow();
+	     String marks;
+		 int Marks = 0, SumOfU1Marks = 0;      
+		 for(int j = 0; j < 6; j++){
+				marks = GetData1(View.getTable(),row, 4+4*j);   // show("marks = "+marks);
+				if(marks == null || marks.isEmpty()){ marks = "00"; }					 
+				if(marks.contentEquals("AB") || marks.contentEquals("AB ")){ marks = "00"; }					 
+				Marks = Integer.parseInt(marks);            //   show("Marks = "+Marks);
+				SumOfU1Marks = SumOfU1Marks + Marks;             //  show(TotalMarks);			 
+			  }
+		return SumOfU1Marks;							
+	}
+
+	public int SumT1Score(){
+		int row = View.getTable().getSelectedRow();
+	     String marks;
+		 int Marks = 0, SumOfT1Marks = 0;      
+		 for(int j = 0; j < 6; j++){
+				marks = GetData1(View.getTable(),row, 5+4*j);   // show("marks = "+marks);
+				if(marks == null || marks.isEmpty()){ marks = "00"; }					 
+				if(marks.contentEquals("AB") || marks.contentEquals("AB ")){ marks = "00"; }					 
+				Marks = Integer.parseInt(marks);            //   show("Marks = "+Marks);
+				SumOfT1Marks = SumOfT1Marks + Marks;             //  show(TotalMarks);			 
+			  }
+		return SumOfT1Marks;							
+	}
+
+	public int SumU2Score(){
+		int row = View.getTable().getSelectedRow();
+	     String marks;
+		 int Marks = 0, SumOfU2Marks = 0;      
+		 for(int j = 0; j < 6; j++){
+				marks = GetData1(View.getTable(),row, 6+4*j);   // show("marks = "+marks);
+				if(marks == null || marks.isEmpty()){ marks = "00"; }					 
+				if(marks.contentEquals("AB") || marks.contentEquals("AB ")){ marks = "00"; }					 
+				Marks = Integer.parseInt(marks);            //   show("Marks = "+Marks);
+				SumOfU2Marks = SumOfU2Marks + Marks;             //  show(TotalMarks);			 
+			  }
+		return SumOfU2Marks;							
+	}
+
+	public int SumT2andEVSScore(){
+		int row = View.getTable().getSelectedRow();
+	     String marks;
+		 int Marks = 0, SumOfT2Marks = 0, EVSandT2Sum = 0;      
+		 for(int j = 0; j < 6; j++){
+				marks = GetData1(View.getTable(),row, 7+4*j);   // show("marks = "+marks);
+				if(marks == null || marks.isEmpty()){ marks = "00"; }					 
+				if(marks.contentEquals("AB") || marks.contentEquals("AB ")){ marks = "00"; }					 
+				Marks = Integer.parseInt(marks);               //   show("Marks = "+Marks);
+				SumOfT2Marks = SumOfT2Marks + Marks;           //  show(TotalMarks);			 
+			  }
+		        int evs = Integer.parseInt(GetData1(View.getTable(),row, 28)); 
+			    EVSandT2Sum = SumOfT2Marks + evs;
+		return EVSandT2Sum;							
+	}
+
+	
 	public void  SaveToFile(String fylnem){
 		
 		 FileWriter fw=null;		
@@ -761,7 +800,7 @@ public class SpreadMRKListController {
 		String Result1 = "Fail", Result2 = "Promoted", Result3 = "PENDING";		
 		
 		for(int i = 0; i < 8; i++){
-			Show(Sub6(i));
+			Show(Sub6());
 //			Show(Sub2(i));
 //			if( engmarks() <= 33) { SetData (Result1, i, 31) ; }
 			
@@ -773,65 +812,95 @@ public class SpreadMRKListController {
 				AVG = TotalXcludeEVS/2 + Integer.parseInt(GetData1(View.getTable(), i, 28));
 				Percent = ( (double) Math.ceil(AVG)/650) * 100;		
 				String result = String.format("%.2f", Percent);
-				SetData (Math.ceil(Sub6(i)/2), i, 31);
+				SetData (Math.ceil(Sub6()/2), i, 31);
 //			}
 		
 		}
 	}                                  
-	public float Sub1(int i){
+	public int Sub1(){
+		int row = View.getTable().getSelectedRow();
 		int TotalOfEng = 0, engtotal = 0;	
 			for(int j = 4; j < 8; j++ ){
-			String EngTotal = GetData1(View.getTable(), i, j);
+			String EngTotal = GetData1(View.getTable(), row, j);
+			
+			if(EngTotal == null || EngTotal.isEmpty()){ EngTotal = "00"; }					 
+			if(EngTotal.contentEquals("AB") || EngTotal.contentEquals("AB ")){ EngTotal = "00"; }					 
+			
 		    engtotal = 	Integer.parseInt(EngTotal);
 		    TotalOfEng = TotalOfEng + engtotal;
 		    }
 		return TotalOfEng;		
 	}
 	
-	public float Sub2(int i){
+	public int Sub2(){
+		int row = View.getTable().getSelectedRow();
 		int TotalOfSLITEL1CS1 = 0, slitel1cs1 = 0;	
 			for(int j = 8; j < 12; j++ ){
-			String SlItEl1Cs1Total = GetData1(View.getTable(), i, j);
+			String SlItEl1Cs1Total = GetData1(View.getTable(), row, j);
+			
+			if(SlItEl1Cs1Total == null || SlItEl1Cs1Total.isEmpty()){ SlItEl1Cs1Total = "00"; }					 
+			if(SlItEl1Cs1Total.contentEquals("AB") || SlItEl1Cs1Total.contentEquals("AB ")){ SlItEl1Cs1Total = "00"; }					 
+			
 			slitel1cs1 = 	Integer.parseInt(SlItEl1Cs1Total);
 		    TotalOfSLITEL1CS1 = TotalOfSLITEL1CS1 + slitel1cs1;
 		    }
 		return TotalOfSLITEL1CS1;		
 	}
 	
-	public float Sub3(int i){
+	public int Sub3(){
+		int row = View.getTable().getSelectedRow();
 		int TotalOfSLITEL2CS2 = 0, slitcl2cs2 = 0;	
 			for(int j = 12; j < 16; j++ ){
-			String SlItEl2Cs2Total = GetData1(View.getTable(), i, j);
+			String SlItEl2Cs2Total = GetData1(View.getTable(), row, j);
+			
+			if(SlItEl2Cs2Total == null || SlItEl2Cs2Total.isEmpty()){ SlItEl2Cs2Total = "00"; }					 
+			if(SlItEl2Cs2Total.contentEquals("AB") || SlItEl2Cs2Total.contentEquals("AB ")){ SlItEl2Cs2Total = "00"; }					 
+						
 			slitcl2cs2 = 	Integer.parseInt(SlItEl2Cs2Total);
 		    TotalOfSLITEL2CS2 = TotalOfSLITEL2CS2 + slitcl2cs2;
 		    }
 		return TotalOfSLITEL2CS2;		
 	}
 
-	public float Sub4(int i){
+	public int Sub4(){
+		int row = View.getTable().getSelectedRow();
 		int TotalOfSub4 = 0, sub4 = 0;	
 			for(int j = 16; j < 20; j++ ){
-			String Sub4Total = GetData1(View.getTable(), i, j);
+			String Sub4Total = GetData1(View.getTable(), row, j);
+			
+			if(Sub4Total == null || Sub4Total.isEmpty()){ Sub4Total = "00"; }					 
+			if(Sub4Total.contentEquals("AB") || Sub4Total.contentEquals("AB ")){ Sub4Total = "00"; }					 
+			
 			sub4 = 	Integer.parseInt(Sub4Total);
 			TotalOfSub4 = TotalOfSub4 + sub4;
 		    }
 		return TotalOfSub4;		
 	}
 
-	public float Sub5(int i){
+	public int Sub5(){
+		int row = View.getTable().getSelectedRow();
 		int TotalOfSub5 = 0, sub5 = 0;	
 			for(int j = 20; j < 24; j++ ){
-			String Sub5Total = GetData1(View.getTable(), i, j);
+			String Sub5Total = GetData1(View.getTable(), row, j);
+			
+			if(Sub5Total == null || Sub5Total.isEmpty()){ Sub5Total = "00"; }					 
+			if(Sub5Total.contentEquals("AB") || Sub5Total.contentEquals("AB ")){ Sub5Total = "00"; }					 
+
 			sub5 = 	Integer.parseInt(Sub5Total);
 			TotalOfSub5 = TotalOfSub5 + sub5;
 		    }
 		return TotalOfSub5;		
 	}
 	
-	public float Sub6(int i){
+	public int Sub6(){
+		int row = View.getTable().getSelectedRow();
 		int TotalOfSub6 = 0, sub6 = 0;	
 			for(int j = 24; j < 28; j++ ){
-			String Sub6Total = GetData1(View.getTable(), i, j);
+			String Sub6Total = GetData1(View.getTable(), row, j);
+			
+			if(Sub6Total == null || Sub6Total.isEmpty()){ Sub6Total = "00"; }					 
+			if(Sub6Total.contentEquals("AB") || Sub6Total.contentEquals("AB ")){ Sub6Total = "00"; }					 
+
 			sub6 = 	Integer.parseInt(Sub6Total);
 			TotalOfSub6 = TotalOfSub6 + sub6;
 		    }
