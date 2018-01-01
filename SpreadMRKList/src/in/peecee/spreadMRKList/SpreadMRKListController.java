@@ -549,6 +549,8 @@ public class SpreadMRKListController {
 		pg.drawString(String.valueOf(SumU2Score()), 515, 375);        // Sum of all Unit 2 Exams
 		pg.drawString(String.valueOf(SumT2andEVSScore()), 515, 395);  // Sum of all Term 2 Exams
 		
+/////  A  G  G  R  E  G  A  T  E
+		
         pg.drawString(String.valueOf(Sub1()), 240, 415);              // Sum of all marks English Subject
         pg.drawString(String.valueOf(Sub2()), 273, 415);              // Sum of all marks SL or Tech Subject
         pg.drawString(String.valueOf(Sub3()), 308, 415);              // Sum of all marks SL or Tech2 Subject
@@ -556,6 +558,29 @@ public class SpreadMRKListController {
         pg.drawString(String.valueOf(Sub5()), 378, 415);              // Sum of all marks SL or Sub5 Subject
         pg.drawString(String.valueOf(Sub6()), 412, 415);              // Sum of all marks SL or Sub6 Subject
         pg.drawString(GetData1(View.getTable(),row,28), 450, 415);    // Marks of EVS Subject
+
+/////  A  V  E  R  A  G  E 
+        
+		float SUB1 = Sub1(); int sub1 = (int) Math.ceil(SUB1/2); 
+		pg.drawString(String.valueOf(sub1), 240, 435);
+
+		float SUB2 = Sub2(); int sub2 = (int) Math.ceil(SUB2/2); 
+		pg.drawString(String.valueOf(sub2), 275, 435);
+
+		float SUB3 = Sub3(); int sub3 = (int) Math.ceil(SUB3/2); 
+		pg.drawString(String.valueOf(sub3), 310, 435);
+
+		float SUB4 = Sub4(); int sub4 = (int) Math.ceil(SUB4/2); 
+		pg.drawString(String.valueOf(sub4), 345, 435);
+
+		float SUB5 = Sub5(); int sub5 = (int) Math.ceil(SUB5/2); 
+		pg.drawString(String.valueOf(sub5), 380, 435);
+
+		float SUB6 = Sub6(); int sub6 = (int) Math.ceil(SUB6/2); 
+		pg.drawString(String.valueOf(sub6), 415, 435);
+		
+        pg.drawString(GetData1(View.getTable(),row,28), 450, 435);    // Marks of EVS Subject
+
         
 //		  Font newFont;		          
 		  newFont = new Font("Liberation Serif", Font.PLAIN, 9);
