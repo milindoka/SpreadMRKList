@@ -249,6 +249,10 @@ public class SpreadMRKListView extends javax.swing.JFrame {
 	public JButton getPrintButton(){
         return btnPrintCurrent;
     }
+
+	public JButton getPrintAllButton(){
+        return btnPrintAll;
+    }	
 	
 	public JButton getSetPrinterButton(){
         return btnSetPrinter;
