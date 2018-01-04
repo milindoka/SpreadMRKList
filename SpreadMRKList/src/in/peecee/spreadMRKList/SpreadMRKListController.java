@@ -37,6 +37,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 public class SpreadMRKListController {
 
@@ -491,6 +493,13 @@ public class SpreadMRKListController {
 		  String EVS = GetData1(View.getTable(),row,28);
 		  
 	 try {
+		 final String[] TableItemC1 = {"Examination","Unit Test I","Terminal I","Unit test II","Terminaal II",
+	                "Aggregate","Average","Grace"};
+         final String[] TableItemC2 = {"Max", "25", "50", "25", "100", "-----", "-----", "15"};
+         final String[] TableItemC3 = {"Min", "-----", "-----", "-----", "-----", "70", "35", "-----"};
+         final int[] SubTotal = {Sub1(),Sub2(), Sub3(), Sub4(), Sub5(), Sub6()};
+         final int[] ExamwiseSum = {SumU1Score(), SumT1Score(), SumU2Score(), SumT2andEVSScore()};
+		 
 	      PrinterJob pjob = PrinterJob.getPrinterJob();
 		  pjob.setJobName("Current Marks Card Print");
 		  pjob.setCopies(1);
@@ -502,105 +511,68 @@ public class SpreadMRKListController {
 		  Font newFont;		          
 		  newFont = new Font("Liberation Serif", Font.PLAIN, 13);
 		  int LtMrg = 40;       // Left Top x, Left Top y and Left Margin
-		  int BtMrg = 750;	        		          		          		          
-		  for(int i = 0; i < 8; i++){pg.drawRect(80, 300+i*20, 80, 20); }    // Printing LEFT Two columns grid			  				          
-		  for(int j = 0; j < 2; j++){
-			pg.drawRect(230 + j*87, 460, 88, 20);                            // Printing Bottom Rectangles					
-			pg.drawString("RESULT", 250, 475);
-		  }	
-			for(int j = 0; j < 11; j++){
-				  for(int i = 0; i < 8; i++){	
-					  if(j < 10) { pg.drawRect(160 + j*35, 300+i*20, 35, 20);}        // Printing Body of Marks Sheets
-					  if(j == 10){ pg.drawRect(510, 300+i*20, 65, 20); }	  
-				  }   
-				}   
-		  
-		  for(int i = 0; i < subject.size(); i++){ pg.drawString(subject.get(i), 235+i*35, 315);}	  //   Subject 		 					  
-			  				  			  
-		  pg.drawString("Examination", 82, 315);
-		  pg.drawString("Unit Test I", 90, 335);
-		  pg.drawString("Terminal I", 90, 355);
-	      pg.drawString("Unit Test II", 90, 375);
-		  pg.drawString("Terminal II", 90, 395);
-		  pg.drawString("Aaggregate", 85, 415);
-		  pg.drawString("Average", 95, 435);
-		  pg.drawString("Grace", 103, 455);
-		  pg.drawString("Max", 165, 315);
-		  pg.drawString("Min", 200, 315);
-		  pg.drawString("EVS", 445, 315);
-		  pg.drawString("PTE", 480, 315);          
-		  pg.drawString("Total", 512, 315);
-		  pg.drawString("25", 170, 335);
-		  pg.drawString("50", 170, 355);
-		  pg.drawString("25", 170, 375);
-		  pg.drawString("100", 165, 395);
-		  pg.drawString("70", 205, 415);
-		  pg.drawString("35", 205, 435);
-		  pg.drawString("15", 170, 455);					  			  
-			  			
-		for(int k = 0; k < 4; k++) { pg.drawString("-----", 200, 335+k*20); }
-		for(int k = 0; k < 2; k++) { pg.drawString("-----", 165, 415+k*20);	}
-		pg.drawString("-----", 205, 455);			
+		  int BtMrg = 750;	        		          		          		
+		  pg.drawString("EVS", 425, 315);
+		  pg.drawString("PTE", 460, 315);          
+		  pg.drawString("Total", 505, 315);
+		  pg.drawString("RESULT", 250, 475);
+
+		  for(int j =0; j < 12; j++){
+			for(int i = 0; i < 8; i++){
+			  if(j == 0) { pg.drawRect(60, 300+i*20, 80, 20); }            // Printing LEFT columns grid
+			  if(j == 11){ pg.drawRect(490, 300+i*20, 70, 20);}            // Printing RIGHT columns grid
+			  if(j>0 &&j<11) {pg.drawRect(105 + j*35, 300+i*20, 35, 20);}  // Printing Body of Marks Sheets
+			}					
+		  }
+		  for(int j = 0; j < 2; j++){pg.drawRect(230 + j*87, 460, 88, 20);}   // Printing Bottom Rectangles							
+		  for(int i = 0; i < 8; i++){pg.drawString(TableItemC1[i], 62, 315+i*20);}
+		  for(int i = 0; i < 8; i++){pg.drawString(TableItemC2[i], 145, 315+i*20);}
+		  for(int i = 0; i < 8; i++){pg.drawString(TableItemC3[i], 182, 315+i*20);}
+		  for(int i = 0; i < subject.size(); i++){ pg.drawString(subject.get(i), 214+i*35, 315);}	 // Subjects
+	 	  
 		pg.drawString("( FOR OFFICE USE ONLY )", 230, LtMrg);
 		pg.drawString("( FOR OFFICE USE ONLY )", 230, BtMrg);
 		int k = 0;
 		for(int i= 0; i < 6; i++){
 		   for(int j = 0; j < 4; j++){
-			 pg.drawString(subMarksArray.get(k), 240+i*35, 335+j*20);   //  All Marks
+			 pg.drawString(subMarksArray.get(k), 220+i*35, 335+j*20);   //  All Marks
 			 k++;
 			}								
 		}		
 		
 ///// E X A M W I S E   S U M
 		
-		pg.drawString(subMarksArray.get(24), 450, 395);               //  EVS marks
-		pg.drawString(subMarksArray.get(25), 485, 395);               //  PTE Grade
-		int row = View.getTable().getSelectedRow();        
-		pg.drawString(String.valueOf(SumU1Score()), 515, 335);        // Sum of all Unit 1 Exams
-		pg.drawString(String.valueOf(SumT1Score()), 515, 355);        // Sum of all Term 1 Exams
-		pg.drawString(String.valueOf(SumU2Score()), 515, 375);        // Sum of all Unit 2 Exams
-		pg.drawString(String.valueOf(SumT2andEVSScore()), 515, 395);  // Sum of all Term 2 Exams
-		
+		pg.drawString(subMarksArray.get(24), 430, 395);               //  EVS marks
+		pg.drawString(subMarksArray.get(25), 465, 395);               //  PTE Grade
+		for(int i = 0; i < 4; i++){
+			pg.drawString(String.valueOf(ExamwiseSum[i]), 515, 335+i*20);  // Sum of all Unit n Term Exams
+		}
+				
 /////  A  G  G  R  E  G  A  T  E
 		
-        pg.drawString(String.valueOf(Sub1()), 240, 415);              // Sum of all marks English Subject
-        pg.drawString(String.valueOf(Sub2()), 273, 415);              // Sum of all marks SL or Tech Subject
-        pg.drawString(String.valueOf(Sub3()), 308, 415);              // Sum of all marks SL or Tech2 Subject
-        pg.drawString(String.valueOf(Sub4()), 341, 415);              // Sum of all marks SL or Sub4 Subject
-        pg.drawString(String.valueOf(Sub5()), 378, 415);              // Sum of all marks SL or Sub5 Subject
-        pg.drawString(String.valueOf(Sub6()), 412, 415);              // Sum of all marks SL or Sub6 Subject
-        pg.drawString(GetData1(View.getTable(),row,28), 450, 415);    // Marks of EVS Subject
+		int row = View.getTable().getSelectedRow();  
+        for(int i = 0; i <6; i++){
+        	pg.drawString(String.valueOf(SubTotal[i]), 215+i*35, 415);  // Aggregate marks of each subject
+        }        
+        pg.drawString(GetData1(View.getTable(),row,28), 430, 415);    // Marks of EVS Subject
 
-/////  A  V  E  R  A  G  E 
-        
-		float SUB1 = Sub1(); int sub1 = (int) Math.ceil(SUB1/2); 
-		pg.drawString(String.valueOf(sub1), 240, 435);
+/////  A  V  E  R  A  G  E  MARKS OF EVERY SUBJECT
+        float[] AverageMrks = {Sub1(), Sub2(), Sub3(), Sub4(), Sub5(), Sub6()};
+        for(int i = 0; i < 6; i++){
+    		pg.drawString(String.valueOf((int) Math.ceil(AverageMrks[i]/2)), 220+i*35, 435); // Average marks of each subject
 
-		float SUB2 = Sub2(); int sub2 = (int) Math.ceil(SUB2/2); 
-		pg.drawString(String.valueOf(sub2), 275, 435);
-
-		float SUB3 = Sub3(); int sub3 = (int) Math.ceil(SUB3/2); 
-		pg.drawString(String.valueOf(sub3), 310, 435);
-
-		float SUB4 = Sub4(); int sub4 = (int) Math.ceil(SUB4/2); 
-		pg.drawString(String.valueOf(sub4), 345, 435);
-
-		float SUB5 = Sub5(); int sub5 = (int) Math.ceil(SUB5/2); 
-		pg.drawString(String.valueOf(sub5), 380, 435);
-
-		float SUB6 = Sub6(); int sub6 = (int) Math.ceil(SUB6/2); 
-		pg.drawString(String.valueOf(sub6), 415, 435);
+        }
 		
-        pg.drawString(GetData1(View.getTable(),row,28), 450, 435);    // Marks of EVS Subject
+        pg.drawString(GetData1(View.getTable(),row,28), 430, 435);    // Marks of EVS Subject
         
-//		  Font newFont;		          
-		  newFont = new Font("Liberation Serif", Font.PLAIN, 9);
+        newFont = new Font("Liberation Serif", Font.PLAIN, 9);
 
 		pg.drawString(String.valueOf(SumU1Score()+SumT1Score()+SumU2Score()
-				                     +SumT2andEVSScore()+"/1250" ), 514, 415);  // Sum of all U1, T1, U2, T2
+				                     +SumT2andEVSScore()+"/1250" ), 493, 415);  // Sum of all U1, T1, U2, T2
 
-		pg.drawString(String.valueOf(sub1+sub2+sub3+sub4+sub5+sub6+
-				      Integer.parseInt(GetData1(View.getTable(),row,28))+"/650" ), 514, 435);  // Sum of all Averages
+		pg.drawString(String.valueOf((int) Math.ceil(Sub1()/2)+(int) Math.ceil(Sub2()/2)+(int) Math.ceil(Sub3()/2)+
+				                     (int) Math.ceil(Sub4()/2)+(int) Math.ceil(Sub5()/2)+(int) Math.ceil(Sub6()/2)+
+				                      Integer.parseInt(GetData1(View.getTable(),row,28))+"/650" ), 500, 435);  // Sum of all Averages
 
 	    				
 		Calendar cal = Calendar.getInstance();
@@ -609,17 +581,19 @@ public class SpreadMRKListController {
 
 		newFont = new Font("Liberation Serif", Font.PLAIN, 10);
 
-		pg.drawString("Mark Sheet showing the number of marks Obtained by  ", 80, 200);
-		pg.drawString(StuDetailsArray.get(2), 80, 220);   //  Name of student 
-		pg.drawString("with Roll No. : "+ StuDetailsArray.get(0)+" of Division : "
-		              +StuDetailsArray.get(1)+", in " + Streamfinder(RollNo)+ " stream", 80, 240);
-
-		pg.drawString("The following table shows each head of passing at FYJC examintion conducted", 80, 260);
-		pg.drawString("during the academic year " + YEAR +" - " + year, 80, 280);				
-		pg.drawString("NOTE  :  This marksheet has been prepared as per the instruction of circular", 80, 520);
-		pg.drawString("No 6987,dated 04/11/2009 issued by Secretary, Maharashtra State", 140, 540);
-		pg.drawString("Board of Secondary and Higher Secondary Education,Pune 411004", 140, 560);
-			
+		pg.drawString("Mark Sheet showing the number of marks Obtained by  ", 60, 200);
+		pg.drawString(StuDetailsArray.get(2), 60, 220);   //  Name of student 
+		pg.drawString("with Roll No.:"+ StuDetailsArray.get(0)+" of Division : "
+		              +StuDetailsArray.get(1)+", in " + Streamfinder(RollNo)+ " stream", 60, 240);
+		pg.drawString("The following table shows each head of passing at FYJC examintion conducted", 60, 260);
+		pg.drawString("during the academic year " + YEAR +" - " + year, 60, 280);				
+		
+/////  F O O T E R		
+		pg.drawString("NOTE  :  This marksheet has been prepared as per the instruction of circular", 60, 520);
+		pg.drawString("No 6987,dated 04/11/2009 issued by Secretary, Maharashtra State", 120, 540);
+		pg.drawString("Board of Secondary and Higher Secondary Education,Pune 411004", 120, 560);
+		
+		
 		return Printable.PAGE_EXISTS;
 	  }
    });
@@ -689,9 +663,14 @@ public class SpreadMRKListController {
 				for(int i = 0; i < 8; i++){pg.drawString(TableItemC2[i], 145, 315+i*20);}
 				for(int i = 0; i < 8; i++){pg.drawString(TableItemC3[i], 182, 315+i*20);}
 				for(int i = 0; i < subject.size(); i++){ pg.drawString(subject.get(i), 214+i*35, 315);}	 // Subjects
-				
-				
-				      return Printable.PAGE_EXISTS;
+		   		
+				JTableHeader jTablHdr = View.getTable().getTableHeader();
+		   		TableColumnModel jtcm = jTablHdr.getColumnModel();
+		   		TableColumn jtc = jtcm.getColumn(pageNum++);
+		   		
+		   		
+		   		
+		   		return Printable.PAGE_EXISTS;
 				    } 
 				    else
 					{
