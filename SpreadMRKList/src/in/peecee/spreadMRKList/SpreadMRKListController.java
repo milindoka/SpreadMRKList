@@ -510,7 +510,8 @@ public class SpreadMRKListController {
 		  }	
 			for(int j = 0; j < 11; j++){
 				  for(int i = 0; i < 8; i++){	
-						  pg.drawRect(160 + j*35, 300+i*20, 35, 20);        // Printing Body of Marks Sheets
+					  if(j < 10) { pg.drawRect(160 + j*35, 300+i*20, 35, 20);}        // Printing Body of Marks Sheets
+					  if(j == 10){ pg.drawRect(510, 300+i*20, 65, 20); }	  
 				  }   
 				}   
 		  
@@ -591,14 +592,16 @@ public class SpreadMRKListController {
 		pg.drawString(String.valueOf(sub6), 415, 435);
 		
         pg.drawString(GetData1(View.getTable(),row,28), 450, 435);    // Marks of EVS Subject
-
         
 //		  Font newFont;		          
 		  newFont = new Font("Liberation Serif", Font.PLAIN, 9);
 
 		pg.drawString(String.valueOf(SumU1Score()+SumT1Score()+SumU2Score()
-				                     +SumT2andEVSScore()+"/1250" ), 514, 415);  // Sum of all
-        
+				                     +SumT2andEVSScore()+"/1250" ), 514, 415);  // Sum of all U1, T1, U2, T2
+
+		pg.drawString(String.valueOf(sub1+sub2+sub3+sub4+sub5+sub6+
+				      Integer.parseInt(GetData1(View.getTable(),row,28))+"/650" ), 514, 435);  // Sum of all Averages
+
 	    				
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
@@ -637,7 +640,7 @@ public class SpreadMRKListController {
 	public void BtnPrintAllMarksCards(){
 		
 		   final ArrayList<String> subject;
-		    int row = 0;    //   View.getTable().getSelectedRow();
+		    int row = 24;    
 //		    if(row <= 0){show("No name or Roll Number is selected "); return;}
 		    subMarksArray.removeAll(subMarksArray);   
 		   	for(int k = 4; k < 30 ; k++){	   		
@@ -650,7 +653,6 @@ public class SpreadMRKListController {
 		   	}
 		   	
 			  final String RollNo = View.getTable().getModel().getValueAt(row, 1).toString();
-//			  ArrayList<String> subject;		  
 			  subject = collheaderfinder(RollNo);
 			  String EVS = GetData1(View.getTable(),row,28);
 
@@ -669,8 +671,8 @@ public class SpreadMRKListController {
 				   {
 					pg.drawString("( FOR OFFICE USE ONLY )", 230, 40);
 					pg.drawString("( FOR OFFICE USE ONLY )", 230, 750);
-					pg.drawString(subMarksArray.get(24), 394, 395);               //  EVS marks
-					pg.drawString(subMarksArray.get(25), 485, 395);               //  PTE Grade
+					pg.drawString(subMarksArray.get(24), 430, 395);               //  EVS marks
+					pg.drawString(subMarksArray.get(25), 465, 395);               //  PTE Grade
 					  pg.drawString("EVS", 425, 315);
 					  pg.drawString("PTE", 460, 315);          
 					pg.drawString("Total", 505, 315);
