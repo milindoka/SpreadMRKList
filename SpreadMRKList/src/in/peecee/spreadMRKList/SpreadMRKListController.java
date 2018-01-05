@@ -506,8 +506,8 @@ public class SpreadMRKListController {
 		  pjob.setPrintable(new Printable() {
 		  public int print(Graphics pg, PageFormat pf, int pageNum) {
 		  int totalpages = 0;
-		  if (pageNum > totalpages) // we only print one page
-		  return Printable.NO_SUCH_PAGE; // ie., end of job
+		  if (pageNum > totalpages)                                 // we only print one page
+		  return Printable.NO_SUCH_PAGE;                            // ie., end of job
 		  Font newFont;		          
 		  newFont = new Font("Liberation Serif", Font.PLAIN, 13);
 		  int LtMrg = 40;       // Left Top x, Left Top y and Left Margin
@@ -533,8 +533,8 @@ public class SpreadMRKListController {
 		pg.drawString("( FOR OFFICE USE ONLY )", 230, LtMrg);
 		pg.drawString("( FOR OFFICE USE ONLY )", 230, BtMrg);
 		int k = 0;
-		for(int i= 0; i < 6; i++){
-		   for(int j = 0; j < 4; j++){
+  	    for(int i= 0; i < 6; i++){
+	        for(int j = 0; j < 4; j++){
 			 pg.drawString(subMarksArray.get(k), 220+i*35, 335+j*20);   //  All Marks
 			 k++;
 			}								
@@ -613,8 +613,8 @@ public class SpreadMRKListController {
    
 	public void BtnPrintAllMarksCards(){
 		
-		   final ArrayList<String> subject;
-		    int row = 24;    
+/*		   final ArrayList<String> subject;
+		    int row = 25;    //  View.getTable().getRowCount();
 //		    if(row <= 0){show("No name or Roll Number is selected "); return;}
 		    subMarksArray.removeAll(subMarksArray);   
 		   	for(int k = 4; k < 30 ; k++){	   		
@@ -628,7 +628,7 @@ public class SpreadMRKListController {
 		   	
 			  final String RollNo = View.getTable().getModel().getValueAt(row, 1).toString();
 			  subject = collheaderfinder(RollNo);
-			  String EVS = GetData1(View.getTable(),row,28);
+			  String EVS = GetData1(View.getTable(),row,28);       */
 
 		  try {
               final String[] TableItemC1 = {"Examination","Unit Test I","Terminal I","Unit test II","Terminaal II",
@@ -640,13 +640,14 @@ public class SpreadMRKListController {
 			  pjob.setJobName("All Marks Card - Print");
 			  pjob.setPrintable(new Printable() {
 			  public int print(Graphics pg, PageFormat pf, int pageNum) {
-				int totalpages = 15;
-				  if (pageNum < totalpages) // we only print one page
+				int RowCount = View.getTable().getRowCount();  
+				int totalpages = RowCount;
+				  if (pageNum < totalpages) 
 				   {
 					pg.drawString("( FOR OFFICE USE ONLY )", 230, 40);
 					pg.drawString("( FOR OFFICE USE ONLY )", 230, 750);
-					pg.drawString(subMarksArray.get(24), 430, 395);               //  EVS marks
-					pg.drawString(subMarksArray.get(25), 465, 395);               //  PTE Grade
+//					pg.drawString(subMarksArray.get(24), 430, 395);               //  EVS marks
+//					pg.drawString(subMarksArray.get(25), 465, 395);               //  PTE Grade
 					  pg.drawString("EVS", 425, 315);
 					  pg.drawString("PTE", 460, 315);          
 					pg.drawString("Total", 505, 315);
@@ -662,11 +663,19 @@ public class SpreadMRKListController {
 				for(int i = 0; i < 8; i++){pg.drawString(TableItemC1[i], 62, 315+i*20);}
 				for(int i = 0; i < 8; i++){pg.drawString(TableItemC2[i], 145, 315+i*20);}
 				for(int i = 0; i < 8; i++){pg.drawString(TableItemC3[i], 182, 315+i*20);}
-				for(int i = 0; i < subject.size(); i++){ pg.drawString(subject.get(i), 214+i*35, 315);}	 // Subjects
-		   		
-				JTableHeader jTablHdr = View.getTable().getTableHeader();
-		   		TableColumnModel jtcm = jTablHdr.getColumnModel();
-		   		TableColumn jtc = jtcm.getColumn(pageNum++);
+//				for(int i = 0; i < subject.size(); i++){ pg.drawString(subject.get(i), 214+i*35, 315);}	 // Subjects
+
+				for(int j = 0; j < 6; j++){
+					for(int i = 0; i < 4; i++){                     //  All marks except EVS and PTE
+						pg.drawString(GetData1(View.getTable(), pageNum, 4+i+(4*j)), 220+j*35, 335+i*20);
+					}
+                }
+		        pg.drawString(GetData1(View.getTable(), pageNum, 28), 430, 395);
+		        pg.drawString(GetData1(View.getTable(), pageNum, 29), 465, 395);
+				
+//				JTableHeader jTablHdr = View.getTable().getTableHeader();
+//		   		TableColumnModel jtcm = jTablHdr.getColumnModel();
+//		   		TableColumn jtc = jtcm.getColumn(pageNum++);
 		   		
 		   		
 		   		
